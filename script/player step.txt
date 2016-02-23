@@ -1,0 +1,55 @@
+//Get player's inputs
+key_right = keyboard_check(vk_right); //gamepad_button_check_pressed(0, gp_axisrh)
+key_left = -keyboard_check(vk_left); //gamepad_button_check_pressed(0, gp_axislh)
+key_action = keyboard_check_pressed(vk_space); //gamepad_button_check_pressed(0, gp_face1)
+
+//Process inputs
+move = key_left + key_right;
+if (move > 0) {
+    if (velx < movespeed) {
+        velx += 1;
+        if (!jumping){
+            jumping = true;
+            vely = -movespeed * 2;
+            audio_play_sound(jump00, 10, true);
+        }
+    }
+}
+if (move < 0) {
+    if (velx > -movespeed) {
+        velx -= 1;
+        if (!jumping){
+            jumping = true;
+            vely = -movespeed * 2;
+            audio_play_sound(jump00, 10, true);
+        }
+    }
+}
+velx *= fric;
+vely += grav;
+
+//Horizontal Collision
+if (place_meeting(x+velx,y,wall))
+{
+    while(!place_meeting(x+sign(velx),y,wall))
+    {
+        x += sign(velx);
+    }
+    velx = 0;
+}
+x += velx;
+//Vertical Collision
+if (place_meeting(x,y+vely,wall))
+{
+    while(!place_meeting(x,y+sign(vely),wall))
+    {
+        y += sign(vely);
+    }
+    vely = 0;
+}
+y += vely;
+
+if (place_meeting(x,y+1,wall))
+{
+    jumping = false;
+}

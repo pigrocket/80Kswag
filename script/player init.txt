@@ -1,0 +1,7 @@
+///Iniialize Vars
+grav = 1;
+fric = .9;
+velx = 0;
+vely = 1;
+movespeed = 6;
+jumping = false;
